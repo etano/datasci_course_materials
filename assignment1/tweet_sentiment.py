@@ -33,17 +33,12 @@ def ParseTweets(fp,tweets):
       try:
         score += sentiments[word]
       except:
-        tmpNewSentiments.append(word)
+        continue
     for mws in multiWordSentiments:
       if mws in tweet:
         score += sentiments[mws]
     scores.append(score)
 
-    for newSentiment in tmpNewSentiments:
-      try:
-        newSentiments[newSentiment] += score
-      except:
-        newSentiments[newSentiment] = score
   return scores
 
 def main():
