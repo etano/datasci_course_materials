@@ -4,43 +4,38 @@ import json
 def lines(fp):
   print str(len(fp.readlines()))
 
-def GetTweets(fp):
-  tweets = []
+def GetTags(fp):
+  tags = []
   for line in fp.readlines():
     tweet = json.loads(line)
     try:
-      tweets.append(tweet['text'])
+      for tag in tweet['entities']['hashtags']:
+        tags.append(tag['text'])
     except:
       continue
-  return tweets
-
-def ParseTweets(tweets):
-  tags = {}
-  for tweet in tweets:
-    tweet = ' '.join(tweet.split())
-    for word in tweet.split():
-      if word[0] == '#':
-        word = word[1:]
-        try:
-          tags[word] += 1
-        except:
-          tags[word] = 1
-
   return tags
+
+def CountTags(tags):
+  tagsHist = {}
+  for tag in tags:
+    try:
+      tagsHist[tag] += 1
+    except:
+      tagsHist[tag] = 1
+
+  return tagsHist
 
 def main():
   tweet_file = open(sys.argv[1])
-  #lines(sent_file)
-  #lines(tweet_file)
 
-  tweets = GetTweets(tweet_file)
-  tags = ParseTweets(tweets)
+  tags = GetTags(tweet_file)
+  tagsHist = CountTags(tags)
 
   count = 0
-  for tag in sorted(tags, key=tags.get, reverse=True):
+  for tag in sorted(tagsHist, key=tagsHist.get, reverse=True):
     count += 1
     encoded_tag = tag.encode('utf-8')
-    print encoded_tag, float(tags[tag])
+    print encoded_tag, float(tagsHist[tag])
     if count == 10:
       break
 

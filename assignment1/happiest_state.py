@@ -99,9 +99,9 @@ def main():
   scores = ParseTweets(sent_file,tweets)
 
 
-  for locale in sorted(scores, key=scores.get, reverse=True):
-    encoded_locale = locale.encode('utf-8')
-    print encoded_locale, scores[locale]
+  locale = sorted(scores, key=scores.get, reverse=True)[0]
+  encoded_locale = locale.encode('utf-8')
+  print encoded_locale
 
 if __name__ == '__main__':
   main()
